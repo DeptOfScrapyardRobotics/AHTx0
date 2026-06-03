@@ -230,4 +230,3 @@ Writable Properties (Setters)
 -----------------------------
 There are no writable magic properties exposed for AHTx0 sensors in this package.
 
-Written by Angel Gonzalez for Project Saturn Studios, LLC.
