@@ -2,7 +2,6 @@
 
 namespace DeptOfScrapyardRobotics\Sensors\AHTx0\AHT10;
 
-use BareMetal\IntegratedCircuit;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHT10\Concerns\AHT10API;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHT10\Exceptions\AHT10Exception;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHT10\Factory\AHT10Factory;
@@ -13,6 +12,7 @@ use RealityInterface\Sensors\Attributes\MeasuresTemperature;
 use RealityInterface\Sensors\Contracts\Applied\Environmental\RHSensor;
 use RealityInterface\Sensors\Contracts\Applied\Environmental\TemperatureSensor;
 use RealityInterface\Sensors\Enums\SensorType;
+use RealityInterface\Sensors\SensorChip;
 use Waveforms\Carriers\I2C\I2C;
 use Waveforms\Carriers\I2C\I2CDevice;
 
@@ -23,7 +23,7 @@ use Waveforms\Carriers\I2C\I2CDevice;
  */
 #[MeasuresTemperature(SensorType::TEMPERATURE)]
 #[MeasuresRelativeHumidity(SensorType::RELATIVE_HUMIDITY)]
-class AHT10 extends IntegratedCircuit implements RHSensor, TemperatureSensor
+class AHT10 extends SensorChip implements RHSensor, TemperatureSensor
 {
     use AHT10API;
 

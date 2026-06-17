@@ -2,7 +2,7 @@
     "name": "dept-of-scrapyard-robotics/ahtx0",
     "description": "Drive AHT10-30 temperature + humidity sensors over I2C with PHP",
     "type": "library",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "keywords": [
         "framework",
         "scrapyard-io"
