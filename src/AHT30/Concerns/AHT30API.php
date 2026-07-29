@@ -3,20 +3,36 @@
 namespace DeptOfScrapyardRobotics\Sensors\AHTx0\AHT30\Concerns;
 
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHT30\Enums\AHT30OpCode;
-use DeptOfScrapyardRobotics\Sensors\AHTx0\Concerns\AHTx0API;
+use DeptOfScrapyardRobotics\Sensors\AHTx0\AHTx0Exception;
+use DeptOfScrapyardRobotics\Sensors\AHTx0\Concerns\AHTx0InternalAPI;
 
 trait AHT30API
 {
-    use AHTx0API;
+    use AHTx0InternalAPI;
 
-    public function calibrate(): bool
+    /**
+     * Always sends initialize. `$requireStatus` controls the calibrated-bit check.
+     *
+     * @throws AHTx0Exception
+     */
+    public function calibrate(bool $requireStatus = true): bool
     {
-        return $this->send(AHT30OpCode::CMD_INITIALIZE->value, $this->_calibrate());
+        $this->send(AHT30OpCode::CMD_INITIALIZE->value, $this->_calibrate());
+
+        return $this->finishCalibration($requireStatus);
     }
 
-    public function getRelativeHumidity(): float {}
+    /**
+     * AHT30's measurement response is one indivisible transaction:
+     * status + five data bytes + CRC. Reading status separately consumes the sample.
+     */
+    protected function shouldPollAfterMeasurementTrigger(): bool
+    {
+        return false;
+    }
 
-    public function getStatus() {}
-
-    public function getTemp(): float {}
+    protected function measurementResponseLength(): int
+    {
+        return 7;
+    }
 }

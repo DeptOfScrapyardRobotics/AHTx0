@@ -1,9 +1,12 @@
 {
     "name": "dept-of-scrapyard-robotics/ahtx0",
-    "description": "Drive AHT10-30 temperature + humidity sensors over I2C with PHP",
+    "description": "Drive AHT10, AHT20, and AHT30 temperature & humidity sensors over I2C with PHP",
     "type": "library",
-    "version": "0.4.1",
+    "version": "0.6.0",
     "keywords": [
+        "aht10",
+        "aht20",
+        "aht30",
         "framework",
         "scrapyard-io"
     ],
@@ -17,13 +20,14 @@
     ],
     "require": {
         "php": "^8.3",
-        "scrapyard-io/waveforms": "^0.4.0",
-        "scrapyard-io/reality-interface": "^0.4.0",
-        "scrapyard-io/bare-metal": "^0.4.0"
+        "fabricate/circuits": "^0.6.0",
+        "gpio/contracts": "^0.6.0",
+        "gpio/i2c": "^0.6.0",
+        "fabricate/nuts-and-bolts": "^0.6.0"
     },
     "suggest": {
-        "scrapyard-io/i2c": "^0.3.0 - For direct linux-based I2C",
-        "scrapyard-io/mpsse": "^0.3.0 - For I2C over an FTDI Serial-to-USB Device"
+        "microscrap/i2c": "^0.5.0 - For direct linux-based I2C",
+        "microscrap/mpsse": "^0.5.0 - For I2C over an FTDI Serial-to-USB Device"
     },
     "autoload": {
         "psr-4": {
@@ -37,6 +41,16 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.6.x-dev"
+        },
+        "scrapyard-io": {
+            "providers": [
+                "DeptOfScrapyardRobotics\\Sensors\\AHTx0\\AHTx0ServiceProvider"
+            ]
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
