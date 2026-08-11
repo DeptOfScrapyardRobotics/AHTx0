@@ -6,14 +6,15 @@ use DeptOfScrapyardRobotics\Sensors\AHTx0\AHT30\Concerns\AHT30API;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHTx0CarrierTransport;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHTx0Exception;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\Enums\AHTx0I2CAddress;
+use Waveforms\Contracts\Environment\MeasuresRelativeHumidity;
+use Waveforms\Contracts\Environment\MeasuresTemperature;
+use Waveforms\Contracts\Sensors\Enums\HumidityUnit;
+use Waveforms\Contracts\Sensors\Enums\TemperatureUnit;
 use Exception;
-use Fabricate\Contracts\Circuits\Attributes\IntegratedCircuit;
-use Fabricate\Contracts\Circuits\IntegratedCircuit as CircuitContract;
-use Fabricate\Contracts\NutsAndBolts\BootSequence;
-use Fabricate\Contracts\Sensors\Enums\HumidityUnit;
-use Fabricate\Contracts\Sensors\Enums\TemperatureUnit;
-use Fabricate\Contracts\Sensors\Interfaces\Hygrometer;
-use Fabricate\Contracts\Sensors\Interfaces\Thermometer;
+use GeneralPurposeIO\Circuits\Types\SensorIC;
+use GeneralPurposeIO\Contracts\Circuits\Attributes\IntegratedCircuit;
+use GeneralPurposeIO\Contracts\Circuits\Attributes\Pinout;
+use GeneralPurposeIO\Contracts\Circuits\BootSequence;
 use GeneralPurposeIO\I2C\I2C;
 use GeneralPurposeIO\I2C\I2CSlave;
 
@@ -23,7 +24,8 @@ use GeneralPurposeIO\I2C\I2CSlave;
  * @property int $status
  */
 #[IntegratedCircuit('I2C')]
-class AHT30 implements CircuitContract, BootSequence, Hygrometer, Thermometer
+#[Pinout(['I2C' => ['driver', 'device', 'slave']])]
+class AHT30 extends SensorIC implements BootSequence, MeasuresTemperature, MeasuresRelativeHumidity
 {
     use AHT30API;
 
@@ -48,8 +50,8 @@ class AHT30 implements CircuitContract, BootSequence, Hygrometer, Thermometer
     public function __get(string $name): mixed
     {
         return match ($name) {
-            'relative_humidity' => $this->measureHumidity(HumidityUnit::PERCENT),
-            'temperature' => $this->measureTemp(TemperatureUnit::CELSIUS),
+            'relative_humidity' => $this->humidity(HumidityUnit::PERCENT),
+            'temperature' => $this->temperature(TemperatureUnit::CELSIUS),
             'status' => $this->getStatus(),
             default => throw AHTx0Exception::invalidProperty($name, static::class),
         };

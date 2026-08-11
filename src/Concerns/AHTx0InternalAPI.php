@@ -5,10 +5,10 @@ namespace DeptOfScrapyardRobotics\Sensors\AHTx0\Concerns;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\AHTx0Exception;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\Enums\AHTx0OpCode;
 use DeptOfScrapyardRobotics\Sensors\AHTx0\Enums\AHTx0StatusFlag;
-use Fabricate\Contracts\NutsAndBolts\BootScaffolding;
-use Fabricate\Contracts\Sensors\Enums\HumidityUnit;
-use Fabricate\Contracts\Sensors\Enums\TemperatureUnit;
+use GeneralPurposeIO\Contracts\Circuits\BootScaffolding;
 use Fabricate\NutsAndBolts\Concerns\Splices16Bits;
+use Waveforms\Contracts\Sensors\Enums\HumidityUnit;
+use Waveforms\Contracts\Sensors\Enums\TemperatureUnit;
 
 trait AHTx0InternalAPI
 {
@@ -24,7 +24,7 @@ trait AHTx0InternalAPI
     /**
      * @throws AHTx0Exception
      */
-    public function measureTemp(TemperatureUnit $unit): float
+    public function temperature(TemperatureUnit $unit = TemperatureUnit::CELSIUS): float
     {
         return TemperatureUnit::CELSIUS->convert($this->readCelsius(), $unit);
     }
@@ -32,9 +32,21 @@ trait AHTx0InternalAPI
     /**
      * @throws AHTx0Exception
      */
-    public function measureHumidity(HumidityUnit $unit = HumidityUnit::PERCENT): float
+    public function humidity(HumidityUnit $unit = HumidityUnit::PERCENT): float
     {
         return HumidityUnit::PERCENT->convert($this->readRelativeHumidityPercent(), $unit);
+    }
+
+    /** @deprecated Use {@see temperature()} */
+    public function measureTemp(TemperatureUnit $unit): float
+    {
+        return $this->temperature($unit);
+    }
+
+    /** @deprecated Use {@see humidity()} */
+    public function measureHumidity(HumidityUnit $unit = HumidityUnit::PERCENT): float
+    {
+        return $this->humidity($unit);
     }
 
     /**

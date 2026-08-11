@@ -2,7 +2,7 @@
 
 namespace DeptOfScrapyardRobotics\Sensors\AHTx0;
 
-use Fabricate\Contracts\Circuits\CircuitException;
+use GeneralPurposeIO\Contracts\Circuits\CircuitException;
 
 class AHTx0Exception extends CircuitException
 {
